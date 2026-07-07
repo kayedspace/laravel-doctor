@@ -1,0 +1,65 @@
+name: tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  tests:
+    name: PHP ${{ matrix.php }} / Laravel ${{ matrix.laravel }} / Testbench ${{ matrix.testbench }} / Pest ${{ matrix.pest }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '8.3', '8.4','8.5' ]
+        laravel: [ '11', '12', '13' ]
+        include:
+          - laravel: '11'
+            testbench: '9.*'
+            pest: '^3.8'
+            pest_plugin: '^3.2'
+          - laravel: '12'
+            testbench: '10.*'
+            pest: '^3.8'
+            pest_plugin: '^3.2'
+          - laravel: '13'
+            testbench: '11.*'
+            pest: '^4.4'
+            pest_plugin: '^4.1'
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+
+      - name: Select Laravel ${{ matrix.laravel }}
+        run: |
+          composer require "illuminate/support:^${{ matrix.laravel }}.0" "illuminate/console:^${{ matrix.laravel }}.0" "orchestra/testbench:${{ matrix.testbench }}" "pestphp/pest:${{ matrix.pest }}" "pestphp/pest-plugin-laravel:${{ matrix.pest_plugin }}" --no-interaction --no-update
+
+      - name: Install dependencies
+        run: composer update --prefer-dist --no-interaction --no-progress
+
+      - name: Run tests
+        run: vendor/bin/pest
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Pint
+        run: composer format:test
+
+      - name: Larastan
+        run: composer analyse

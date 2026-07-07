@@ -1,0 +1,68 @@
+name: Laravel Doctor
+description: Run Laravel Doctor and optionally upload SARIF to GitHub code scanning.
+
+inputs:
+  working-directory:
+    description: Directory containing the Laravel project.
+    default: "."
+  scan-args:
+    description: Additional arguments appended to doctor:scan.
+    default: ""
+  baseline:
+    description: Project-relative Doctor JSON baseline path.
+    default: ""
+  fail-on-severity:
+    description: Severity threshold passed to --fail-on-severity.
+    default: ""
+  fail-on-new:
+    description: Whether to pass --fail-on-new; requires baseline.
+    default: "false"
+  sarif-path:
+    description: File path for SARIF output.
+    default: doctor-results.sarif
+  upload-sarif:
+    description: Whether to upload SARIF to GitHub code scanning.
+    default: "true"
+
+runs:
+  using: composite
+  steps:
+    - name: Run Laravel Doctor
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        SCAN_ARGS: ${{ inputs.scan-args }}
+        BASELINE: ${{ inputs.baseline }}
+        FAIL_ON_SEVERITY: ${{ inputs.fail-on-severity }}
+        FAIL_ON_NEW: ${{ inputs.fail-on-new }}
+        SARIF_PATH: ${{ inputs.sarif-path }}
+      run: |
+        set -euo pipefail
+
+        args=(doctor:scan --format=sarif)
+
+        if [ -n "$SCAN_ARGS" ]; then
+          # shellcheck disable=SC2206
+          extra_args=($SCAN_ARGS)
+          args+=("${extra_args[@]}")
+        fi
+
+        if [ -n "$BASELINE" ]; then
+          args+=("--baseline=$BASELINE")
+        fi
+
+        if [ -n "$FAIL_ON_SEVERITY" ]; then
+          args+=("--fail-on-severity=$FAIL_ON_SEVERITY")
+        fi
+
+        if [ "$FAIL_ON_NEW" = "true" ]; then
+          args+=("--fail-on-new")
+        fi
+
+        php artisan "${args[@]}" > "$SARIF_PATH"
+
+    - name: Upload SARIF
+      if: ${{ inputs.upload-sarif == 'true' }}
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: ${{ inputs.working-directory }}/${{ inputs.sarif-path }}

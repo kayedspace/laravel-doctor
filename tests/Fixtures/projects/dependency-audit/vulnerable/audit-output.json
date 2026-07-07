@@ -1,0 +1,15 @@
+{
+  "advisories": {
+    "symfony/http-foundation": [
+      {
+        "advisoryId": "CVE-2012-6431",
+        "title": "Request trust boundary vulnerability",
+        "affectedVersions": "<2.0.20",
+        "link": "https://example.test/advisories/CVE-2012-6431"
+      }
+    ]
+  },
+  "abandoned": {
+    "symfony/http-foundation": "symfony/http-kernel"
+  }
+}

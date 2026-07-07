@@ -1,0 +1,76 @@
+{
+  "name": "kayedspace/laravel-doctor",
+  "description": "A stateless, live analysis engine for Laravel projects",
+  "type": "library",
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "Ali Youssef Kayed",
+      "email": "3likayed@gmail.com"
+    }
+  ],
+  "keywords": [
+    "php",
+    "diagnose",
+    "automation",
+    "analysis",
+    "laravel"
+  ],
+  "support": {
+    "issues": "https://github.com/kayedspace/laravel-doctor/issues",
+    "source": "https://github.com/kayedspace/laravel-doctor"
+  },
+
+  "require": {
+    "php": "^8.2 || ^8.3 || ^8.4 || ^8.5",
+    "illuminate/console": "^11.47.0 || ^12.41.1 || ^13.0",
+    "illuminate/support": "^11.47.0 || ^12.41.1 || ^13.0",
+    "laravel/mcp": "^0.7.0 || ^0.8.0",
+    "laravel/prompts": "^0.3.21",
+    "nikic/php-parser": "^5.0"
+  },
+  "require-dev": {
+    "larastan/larastan": "^3.0",
+    "laravel/pint": "^1.16",
+    "opis/json-schema": "^2.6",
+    "orchestra/testbench": "^9.15 || ^10.8 || ^11.0",
+    "pestphp/pest": "^3.8.5 || ^4.4.1",
+    "pestphp/pest-plugin-laravel": "^3.2 || ^4.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "kayedspace\\Doctor\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "kayedspace\\Doctor\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "kayedspace\\Doctor\\DoctorServiceProvider"
+      ],
+      "aliases": {
+        "Doctor": "kayedspace\\Doctor\\Facades\\Doctor"
+      }
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/pest",
+    "test-coverage": "vendor/bin/pest --coverage --min=95",
+    "format": "vendor/bin/pint",
+    "format:test": "vendor/bin/pint --test",
+    "analyse": "vendor/bin/phpstan analyse --memory-limit=512M"
+  },
+  "config": {
+    "sort-packages": true,
+    "allow-plugins": {
+      "pestphp/pest-plugin": true,
+      "phpstan/extension-installer": true
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}

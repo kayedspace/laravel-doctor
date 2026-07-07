@@ -1,0 +1,10 @@
+{
+  "installed": [
+    {
+      "name": "symfony/http-foundation",
+      "version": "v2.0.0",
+      "latest": "v7.0.0",
+      "latest-status": "semver-major-update"
+    }
+  ]
+}

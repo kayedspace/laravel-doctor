@@ -1,0 +1,14 @@
+{
+  "packages": [
+    {
+      "name": "illuminate/support",
+      "version": "v12.0.0"
+    }
+  ],
+  "packages-dev": [
+    {
+      "name": "pestphp/pest",
+      "version": "v3.0.0"
+    }
+  ]
+}

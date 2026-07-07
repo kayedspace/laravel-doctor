@@ -1,0 +1,14 @@
+{
+  "packages": [
+    {
+      "name": "illuminate/support",
+      "version": "v12.0.0"
+    }
+  ],
+  "packages-dev": [
+    {
+      "name": "fakerphp/faker",
+      "version": "v1.23.0"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "valid": false,
+  "errors": [
+    "The package name fixtures/vulnerable is reserved for tests"
+  ],
+  "warnings": []
+}

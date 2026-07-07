@@ -1,0 +1,14 @@
+{
+  "packages": [
+    {
+      "name": "symfony/http-foundation",
+      "version": "v2.0.0"
+    }
+  ],
+  "packages-dev": [
+    {
+      "name": "fakerphp/faker",
+      "version": "v1.23.0"
+    }
+  ]
+}
